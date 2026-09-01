@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // App-wide theme state is shared here.
         BlocProvider(create: (_) => ThemeCubit()),
+        // Counter state is available to the screen tree.
         BlocProvider(create: (_) => CounterCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
+            // Apply the current theme mode from the cubit state.
             themeMode: state is DarkThemeState
                 ? ThemeMode.dark
                 : ThemeMode.light,

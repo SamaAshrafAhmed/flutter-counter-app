@@ -6,29 +6,33 @@ class CounterCubit extends Cubit<CounterState> {
 
   int value = 0;
 
-  // A single action updates the current count and then decides which state
-  // should be emitted: a regular update or a milestone alert.
+  // Increase the count and then decide which state should be emitted.
   void increment() {
     value++;
     _emitCounterState(isNegativeStep: false);
   }
 
+  // Decrease the count and then decide which state should be emitted.
   void decrement() {
     value--;
     _emitCounterState(isNegativeStep: true);
   }
 
+  // Keep milestone checks in one place so every action follows the same rules.
   void _emitCounterState({required bool isNegativeStep}) {
+    // Positive milestone reached.
     if (value == 10) {
       emit(const CounterReached(message: 'Your counter reached 10!'));
       return;
     }
 
+    // Negative milestone reached.
     if (value == -10) {
       emit(const CounterReached(message: 'Your counter reached -10!'));
       return;
     }
 
+    // Trigger a warning when the counter enters negative values.
     if (value == -1 && isNegativeStep) {
       emit(
         const CounterReached(message: 'Your counter reached negative numbers!'),
@@ -36,6 +40,7 @@ class CounterCubit extends Cubit<CounterState> {
       return;
     }
 
+    // Default state for all ordinary updates.
     emit(CounterUpdated());
   }
 }
