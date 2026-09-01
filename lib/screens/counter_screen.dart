@@ -4,6 +4,7 @@ import 'package:flutter_counter_app/cubits/counter_cubit/counter_cubit.dart';
 import 'package:flutter_counter_app/cubits/counter_cubit/counter_states.dart';
 import 'package:flutter_counter_app/cubits/theme_cubit/theme_cubit.dart';
 import 'package:flutter_counter_app/cubits/theme_cubit/theme_state.dart';
+import 'package:flutter_counter_app/widgets/theme_toggle_button.dart';
 import 'package:flutter_counter_app/widgets/update_counter_button.dart';
 
 class CounterScreen extends StatelessWidget {
@@ -68,24 +69,6 @@ class CounterScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ThemeToggleButton extends StatelessWidget {
-  const ThemeToggleButton({super.key, required this.themeCubit});
-
-  final ThemeCubit themeCubit;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: themeCubit.toggleTheme,
-      child: BlocBuilder<ThemeCubit, ThemeState>(
-        builder: (context, state) {
-          return Text(state is DarkThemeState ? '☀️' : '🌙');
-        },
       ),
     );
   }
