@@ -18,8 +18,15 @@ class _CounterScreenState extends State<CounterScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: [
-            BlocListener<CounterCubit, CounterState>(
+            BlocConsumer<CounterCubit, CounterState>(
+              builder: (context, state) {
+                return Text(
+                  counterBloc.value.toString(),
+                  style: TextStyle(fontSize: 50),
+                );
+              },
               listener: (context, state) {
                 if (state is CounterReached) {
                   ScaffoldMessenger.of(context)
@@ -27,15 +34,8 @@ class _CounterScreenState extends State<CounterScreen> {
                   return;
                 }
               },
-              child: BlocBuilder<CounterCubit, CounterState>(
-                builder: (context, state) {
-                  return Text(
-                    BlocProvider.of<CounterCubit>(context).value.toString(),
-                    style: TextStyle(fontSize: 50),
-                  );
-                },
-              ),
             ),
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
