@@ -6,19 +6,25 @@ class CounterCubit extends Cubit<CounterState> {
   int value = 0;
   void increment() {
     value++;
-    if (value == 15) {
-      emit(CounterReached(value: value, msg: "You counted till 15!"));
-    } else {
-      emit(CounterUpdated(value: value));
-    }
+    emitCounter(false);
   }
 
   void decrement() {
     value--;
-    if (value == 15) {
-      emit(CounterReached(value: value, msg: "You counted till 15!"));
+    emitCounter(true);
+  }
+
+  void emitCounter(bool reachedNegative) {
+    if (value == 10) {
+      emit(CounterReached(msg: "Your Counter Reached 10!"));
+    } else if (value == -10) {
+      emit(CounterReached(msg: "Your Counter Reached -10!"));
+    } else if (value == -1) {
+      reachedNegative
+          ? emit(CounterReached(msg: "Your Counter Reached Negative numbers!"))
+          : emit(CounterUpdated());
     } else {
-      emit(CounterUpdated(value: value));
+      emit(CounterUpdated());
     }
   }
 }

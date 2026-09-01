@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_counter_app/cubits/counter_cubit/counter_cubit.dart';
 import 'package:flutter_counter_app/cubits/counter_cubit/counter_states.dart';
+import 'package:flutter_counter_app/widgets/update_counter_button.dart';
 
 class CounterScreen extends StatefulWidget {
   const new({super.key});
@@ -13,7 +14,7 @@ class CounterScreen extends StatefulWidget {
 class _CounterScreenState extends State<CounterScreen> {
   @override
   Widget build(BuildContext context) {
-    var counterBloc = BlocProvider.of<CounterCubit>(context);
+    var counterBloc = context.read<CounterCubit>();
     return Scaffold(
       body: Center(
         child: Column(
@@ -41,14 +42,14 @@ class _CounterScreenState extends State<CounterScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  UpdateValueButton(
+                  UpdateCounterButton(
                     text: "+",
                     color: Colors.green,
                     onPressed: () {
                       counterBloc.increment();
                     },
                   ),
-                  UpdateValueButton(
+                  UpdateCounterButton(
                     text: "-",
                     color: Colors.red,
                     onPressed: () {
@@ -61,29 +62,6 @@ class _CounterScreenState extends State<CounterScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class UpdateValueButton extends StatelessWidget {
-  const new({
-    super.key,
-    required this.text,
-    required this.color,
-    required this.onPressed,
-  });
-  final String text;
-  final Color color;
-  final VoidCallback onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        backgroundColor: color,
-        fixedSize: Size(50, 50),
-      ),
-      child: Text(text, style: TextStyle(color: Colors.white, fontSize: 20)),
     );
   }
 }
