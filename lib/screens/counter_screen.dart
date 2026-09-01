@@ -6,75 +6,62 @@ import 'package:flutter_counter_app/cubits/theme_cubit/theme_cubit.dart';
 import 'package:flutter_counter_app/cubits/theme_cubit/theme_state.dart';
 import 'package:flutter_counter_app/widgets/update_counter_button.dart';
 
-class CounterScreen extends StatefulWidget {
-  const new({super.key});
+class CounterScreen extends StatelessWidget {
+  const CounterScreen({super.key});
 
-  @override
-  State<CounterScreen> createState() => _CounterScreenState();
-}
-
-class _CounterScreenState extends State<CounterScreen> {
   @override
   Widget build(BuildContext context) {
-    CounterCubit counterBloc = context.read<CounterCubit>();
-    ThemeCubit themeBloc = context.read<ThemeCubit>();
+    final counterCubit = context.watch<CounterCubit>();
+    final themeCubit = context.read<ThemeCubit>();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          "Counter App",
+        title: const Text(
+          'Counter App',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
-        actions: [ThemeToggleButton(themeBloc: themeBloc)],
+        actions: [ThemeToggleButton(themeCubit: themeCubit)],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-
           children: [
             BlocConsumer<CounterCubit, CounterState>(
-              builder: (context, state) {
-                return Text(
-                  counterBloc.value.toString(),
-                  style: TextStyle(fontSize: 50),
-                );
-              },
               listener: (context, state) {
                 if (state is CounterReached) {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return Dialog(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(state.msg),
-                        ),
+                      return AlertDialog(
+                        title: const Text('Counter milestone'),
+                        content: Text(state.message),
                       );
                     },
                   );
-                  return;
                 }
               },
+              builder: (context, state) {
+                return Text(
+                  counterCubit.value.toString(),
+                  style: const TextStyle(fontSize: 50),
+                );
+              },
             ),
-
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   UpdateCounterButton(
-                    text: "+",
+                    text: '+',
                     color: Colors.green,
-                    onPressed: () {
-                      counterBloc.increment();
-                    },
+                    onPressed: () => counterCubit.increment(),
                   ),
                   UpdateCounterButton(
-                    text: "-",
+                    text: '-',
                     color: Colors.red,
-                    onPressed: () {
-                      counterBloc.decrement();
-                    },
+                    onPressed: () => counterCubit.decrement(),
                   ),
                 ],
               ),
@@ -87,22 +74,17 @@ class _CounterScreenState extends State<CounterScreen> {
 }
 
 class ThemeToggleButton extends StatelessWidget {
-  const new({super.key, required this.themeBloc});
+  const ThemeToggleButton({super.key, required this.themeCubit});
 
-  final ThemeCubit themeBloc;
+  final ThemeCubit themeCubit;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        themeBloc.toggleTheme();
-      },
+      onPressed: themeCubit.toggleTheme,
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
-          if (state is DarkThemeState) {
-            return Text("☀️");
-          }
-          return Text("🌙");
+          return Text(state is DarkThemeState ? '☀️' : '🌙');
         },
       ),
     );

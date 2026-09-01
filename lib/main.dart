@@ -6,28 +6,29 @@ import 'package:flutter_counter_app/cubits/theme_cubit/theme_state.dart';
 import 'package:flutter_counter_app/screens/counter_screen.dart';
 
 void main() {
-  runApp(BlocProvider(create: (context) => ThemeCubit(), child: MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const new({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CounterCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => CounterCubit()),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: CounterScreen(),
             theme: ThemeData.light(),
-
             darkTheme: ThemeData.dark(),
-
             themeMode: state is DarkThemeState
                 ? ThemeMode.dark
                 : ThemeMode.light,
+            home: const CounterScreen(),
           );
         },
       ),

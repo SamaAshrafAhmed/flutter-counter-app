@@ -1,10 +1,17 @@
-abstract class CounterState {}
+abstract class CounterState {
+  const CounterState();
+}
 
-class CounterInitialState extends CounterState {}
+class CounterInitialState extends CounterState {
+  const CounterInitialState();
+}
 
-class CounterUpdated extends CounterState {}
+class CounterUpdated extends CounterState {
+  const CounterUpdated();
+}
 
 class CounterReached extends CounterState {
-  final String msg;
-  new({ required this.msg});
+  const CounterReached({required this.message});
+
+  final String message;
 }
