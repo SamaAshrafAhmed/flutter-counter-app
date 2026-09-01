@@ -41,8 +41,17 @@ class _CounterScreenState extends State<CounterScreen> {
               },
               listener: (context, state) {
                 if (state is CounterReached) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(state.msg)));
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(state.msg),
+                        ),
+                      );
+                    },
+                  );
                   return;
                 }
               },
