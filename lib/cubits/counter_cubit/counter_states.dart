@@ -1,10 +1,8 @@
-class CounterState {}
+abstract class CounterState {}
 
 class CounterInitialState extends CounterState {}
 
-class CounterUpdated extends CounterState {
-
-}
+class CounterUpdated extends CounterState {}
 
 class CounterReached extends CounterState {
   final String msg;
